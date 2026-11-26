@@ -65,6 +65,15 @@
           ],
           "description": "Scale factor for CJK glyphs with <factor> or [<width_factor>,<height_factor>]",
           "default": 1.0
+        },
+        "scale_punctuation_factor": {
+          "type": [
+            "number",
+            "array",
+            "null"
+          ],
+          "description": "Scale factor for fullwidth punctuation glyphs with <factor> or [<width_factor>,<height_factor>]. When null, uses cjk.scale_factor.",
+          "default": null
         }
       }
     },
@@ -164,6 +173,11 @@
       "description": "Whether to use hinted Latin TTF and Nerd Font static outputs as the base for static NF/CJK merges",
       "default": true
     },
+    "legacy_thin_weight_class": {
+      "type": "boolean",
+      "description": "Use legacy weight class values (250/275 instead of 100/200) for Thin and ExtraLight static fonts to work around GDI fake-bold in JetBrains IDEs on Windows. Default false (use spec-compliant 100/200 values).",
+      "default": false
+    },
     "standard_zero": {
       "type": "boolean",
       "description": "Use standard OpenType zero semantics: the default zero is dotted and the `zero` feature selects the slashed form",
@@ -261,7 +275,7 @@
           "$ref": "#/definitions/freeze_options"
         },
         "cv04": {
-          "description": "[v7.0] Alternative 'l' with left bottom bar, like consolas, will be overrided by 'cv35' in italic style",
+          "description": "[v7.0] Alternative 'l' with left bottom bar, like consolas",
           "$ref": "#/definitions/freeze_options"
         },
         "cv05": {
@@ -294,6 +308,10 @@
         },
         "cv12": {
           "description": "[v8.0] Alternative 'u' without tail, no effect in italic style",
+          "$ref": "#/definitions/freeze_options"
+        },
+        "cv13": {
+          "description": "[v8.0] Alternative 'y' in rounded style, no effect in italic style",
           "$ref": "#/definitions/freeze_options"
         },
         "cv31": {
@@ -356,6 +374,10 @@
           "description": "[v8.0] Alternative italic 'u' without tail",
           "$ref": "#/definitions/freeze_options"
         },
+        "cv46": {
+          "description": "[v8.0] Alternative italic 'l' with left bottom bar, like consolas",
+          "$ref": "#/definitions/freeze_options"
+        },
         "cv61": {
           "description": "[v7.1] Alternative ',' and ';' with straight tail",
           "$ref": "#/definitions/freeze_options"
@@ -386,6 +408,14 @@
         },
         "cv68": {
           "description": "[v8.0] Alternative '===' with 2 bars",
+          "$ref": "#/definitions/freeze_options"
+        },
+        "cv69": {
+          "description": "[v8.0] Normalize '@'",
+          "$ref": "#/definitions/freeze_options"
+        },
+        "cv95": {
+          "description": "[v8.0] Full width Roman numerals and enclosed alphanumerics ('\u216b' / '\u2460' / '\u24d0')",
           "$ref": "#/definitions/freeze_options"
         },
         "cv96": {

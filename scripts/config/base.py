@@ -74,6 +74,7 @@ def default_feature_freeze() -> dict[str, str]:
         "cv10": "ignore",
         "cv11": "ignore",
         "cv12": "ignore",
+        "cv13": "ignore",
         "cv31": "ignore",
         "cv32": "ignore",
         "cv33": "ignore",
@@ -89,6 +90,7 @@ def default_feature_freeze() -> dict[str, str]:
         "cv43": "ignore",
         "cv44": "ignore",
         "cv45": "ignore",
+        "cv46": "ignore",
         "cv61": "ignore",
         "cv62": "ignore",
         "cv63": "ignore",
@@ -96,6 +98,9 @@ def default_feature_freeze() -> dict[str, str]:
         "cv65": "ignore",
         "cv66": "ignore",
         "cv67": "ignore",
+        "cv68": "ignore",
+        "cv69": "ignore",
+        "cv95": "ignore",
         "cv96": "ignore",
         "cv97": "ignore",
         "cv98": "ignore",
@@ -254,6 +259,7 @@ class BuildBehaviorConfig:
 class FeatureBuildConfig:
     normal: bool = False
     standard_zero: bool = False
+    legacy_thin_weight_class: bool = False
     feat: list[str] = field(default_factory=list)
     hinted: bool = True
     liga: bool = True
@@ -294,10 +300,16 @@ class CJKCommonBuildOptions:
     narrow: bool = False
     use_hinted: bool = False
     scale_factor: tuple[float, float] = (1.0, 1.0)
+    scale_punctuation_factor: tuple[float, float] | None = None
 
     def to_dict(self) -> dict[str, Any]:
         data = asdict(self)
         data["scale_factor"] = list(self.scale_factor)
+        data["scale_punctuation_factor"] = (
+            list(self.scale_punctuation_factor)
+            if self.scale_punctuation_factor is not None
+            else None
+        )
         return data
 
 
@@ -470,6 +482,10 @@ class ResolvedConfig:
     @property
     def use_hinted(self) -> bool:
         return self.feature.hinted
+
+    @property
+    def legacy_thin_weight_class(self) -> bool:
+        return self.feature.legacy_thin_weight_class
 
     @property
     def enable_ligature(self) -> bool:

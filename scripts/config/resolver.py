@@ -135,6 +135,8 @@ def _apply_feature_cli(config: ResolvedConfig, args) -> None:
             config.feature_freeze[feature] = "enable"
     if args.standard_zero:
         config.feature.standard_zero = True
+    if args.legacy_thin_weight_class:
+        config.feature.legacy_thin_weight_class = True
     if args.feat:
         config.feature.feat = list(args.feat)
         for feature in args.feat:
@@ -287,6 +289,10 @@ class BuildConfigResolver:
         if "standard_zero" in data:
             config.feature.standard_zero = _require_bool(
                 data["standard_zero"], "standard_zero"
+            )
+        if "legacy_thin_weight_class" in data:
+            config.feature.legacy_thin_weight_class = _require_bool(
+                data["legacy_thin_weight_class"], "legacy_thin_weight_class"
             )
         if "ligature" in data:
             config.feature.liga = _require_bool(data["ligature"], "ligature")
@@ -447,6 +453,13 @@ class BuildConfigResolver:
                 setattr(options, key, _require_bool(raw_cjk[key], f"cjk.{key}"))
         if "scale_factor" in raw_cjk:
             options.scale_factor = parse_scale_factor(raw_cjk["scale_factor"])
+        if "scale_punctuation_factor" in raw_cjk:
+            raw_punctuation_scale = raw_cjk["scale_punctuation_factor"]
+            options.scale_punctuation_factor = (
+                None
+                if raw_punctuation_scale is None
+                else parse_scale_factor(raw_punctuation_scale)
+            )
         return options
 
     def _build_cjk_entries(
@@ -511,6 +524,10 @@ class BuildConfigResolver:
             config.cjk.common_options.narrow = True
         if args.cjk_scale_factor is not None:
             config.cjk.common_options.scale_factor = args.cjk_scale_factor
+        if args.cjk_scale_punctuation_factor is not None:
+            config.cjk.common_options.scale_punctuation_factor = (
+                args.cjk_scale_punctuation_factor
+            )
         if args.cjk_hinted is not None:
             config.cjk.common_options.use_hinted = bool(args.cjk_hinted)
 
